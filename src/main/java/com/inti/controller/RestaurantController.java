@@ -2,6 +2,7 @@ package com.inti.controller;
 
 import java.util.List;
 
+import org.springframework.aop.ThrowsAdvice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.inti.exception.TailleTelephoneException;
 import com.inti.model.Produit;
 import com.inti.model.Restaurant;
 import com.inti.model.RestaurantCampagne;
@@ -40,36 +42,57 @@ public class RestaurantController {
 	}
 	
 	@PostMapping("saveRestaurantVille")
-	public String saveRestaurant(@RequestBody RestaurantVille e)
+	public String saveRestaurant(@RequestBody RestaurantVille e) throws TailleTelephoneException
 	{
 		if(e != null)
 		{
-			restaurantRepository.save(e);			
-			return "Le restaurant de ville avec le numéro : " + e.getNum() + " a bien été ajouté dans la BDD";
+			if(e.getTelephone().length() == 10)
+			{
+				restaurantRepository.save(e);			
+				return "Le restaurant de ville avec le numéro : " + e.getNum() + " a bien été ajouté dans la BDD";
+			}
+			else
+			{
+				throw new TailleTelephoneException();
+			}
 		}
 		
 		return "Le restaurant de ville avec le numéro : " + e.getNum() + " n'a pas été ajouté dans la BDD";
 	}
 	
 	@PostMapping("saveRestaurantCampagne")
-	public String saveRestaurant(@RequestBody RestaurantCampagne e)
+	public String saveRestaurant(@RequestBody RestaurantCampagne e) throws TailleTelephoneException
 	{
 		if(e != null)
 		{
-			restaurantRepository.save(e);			
-			return "Le restaurant de campagne avec le numéro : " + e.getNum() + " a bien été ajouté dans la BDD";
+			if(e.getTelephone().length() == 10)
+			{
+				restaurantRepository.save(e);			
+				return "Le restaurant de campagne avec le numéro : " + e.getNum() + " a bien été ajouté dans la BDD";
+			}
+			else
+			{
+				throw new TailleTelephoneException();
+			}
 		}
 		
 		return "Le restaurant de campagne avec le numéro : " + e.getNum() + " n'a pas été ajouté dans la BDD";
 	}
 	
 	@PostMapping("updateRestaurantVille")
-	public boolean updateRestaurantVille(@RequestBody RestaurantVille e)
+	public boolean updateRestaurantVille(@RequestBody RestaurantVille e) throws TailleTelephoneException
 	{
 		if(e != null & e.getNum() > 0 & e.getNum() <= restaurantRepository.findMaxNumVille())
 		{
-			restaurantRepository.save(e);
-			return true;
+			if(e.getTelephone().length() == 10)
+			{
+				restaurantRepository.save(e);
+				return true;
+			}
+			else
+			{
+				throw new TailleTelephoneException();
+			}
 		}
 		
 		log.error("L'objet restaurant avec l'id : " + e.getNum() + " n'a pas pu être modifié");
@@ -77,12 +100,19 @@ public class RestaurantController {
 	}
 	
 	@PostMapping("updateRestaurantCampagne")
-	public boolean updateRestaurantCampagne(@RequestBody RestaurantCampagne e)
+	public boolean updateRestaurantCampagne(@RequestBody RestaurantCampagne e) throws TailleTelephoneException
 	{
 		if(e != null & e.getNum() > 0 & e.getNum() <= restaurantRepository.findMaxNumCampagne())
 		{
-			restaurantRepository.save(e);
-			return true;
+			if(e.getTelephone().length() == 10)
+			{
+				restaurantRepository.save(e);
+				return true;
+			}
+			else
+			{
+				throw new TailleTelephoneException();
+			}
 		}
 		
 		log.error("L'objet restaurant avec l'id : " + e.getNum() + " n'a pas pu être modifié");
