@@ -2,6 +2,7 @@ package com.inti.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -45,7 +46,7 @@ public abstract class Restaurant {
 	@JoinColumn(name = "idEntreprise")
 	protected Entreprise entreprise;
 	
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "Produit_Restaurant",
 				joinColumns = @JoinColumn(name = "idRestaurant"),
 				inverseJoinColumns = @JoinColumn(name = "idProduit"))

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.inti.model.Produit;
 import com.inti.model.Restaurant;
 import com.inti.model.RestaurantCampagne;
 import com.inti.model.RestaurantVille;
@@ -103,6 +104,23 @@ public class RestaurantController {
 		}
 		
 		return false;
+	}
+	
+	@PostMapping("addProduit/{id}")
+	public String addProduitToRestaurant(@RequestBody Produit p, @PathVariable int id)
+	{
+		if(id > 0 & (id <= restaurantRepository.findMaxNumCampagne() | id <= restaurantRepository.findMaxNumVille()))
+		{
+			Restaurant r = restaurantRepository.findById(id).get();
+			List<Produit> listeProduit = r.getListeProduit();
+			listeProduit.add(p);
+			
+			restaurantRepository.save(r);
+			
+			return "confirmation ajout produit";
+		}
+		
+		return "échec ajout produit";		
 	}
 
 }
