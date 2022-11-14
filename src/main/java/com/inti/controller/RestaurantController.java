@@ -39,27 +39,27 @@ public class RestaurantController {
 	}
 	
 	@PostMapping("saveRestaurantVille")
-	public boolean saveRestaurant(@RequestBody RestaurantVille e)
+	public String saveRestaurant(@RequestBody RestaurantVille e)
 	{
 		if(e != null)
 		{
 			restaurantRepository.save(e);			
-			return true;
+			return "Le restaurant de ville avec le numéro : " + e.getNum() + " a bien été ajouté dans la BDD";
 		}
 		
-		return false;
+		return "Le restaurant de ville avec le numéro : " + e.getNum() + " n'a pas été ajouté dans la BDD";
 	}
 	
 	@PostMapping("saveRestaurantCampagne")
-	public boolean saveRestaurant(@RequestBody RestaurantCampagne e)
+	public String saveRestaurant(@RequestBody RestaurantCampagne e)
 	{
 		if(e != null)
 		{
 			restaurantRepository.save(e);			
-			return true;
+			return "Le restaurant de campagne avec le numéro : " + e.getNum() + " a bien été ajouté dans la BDD";
 		}
 		
-		return false;
+		return "Le restaurant de campagne avec le numéro : " + e.getNum() + " n'a pas été ajouté dans la BDD";
 	}
 	
 	@PostMapping("updateRestaurantVille")
